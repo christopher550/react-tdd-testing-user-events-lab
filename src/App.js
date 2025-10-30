@@ -1,24 +1,94 @@
+import { useState } from "react";
+
 function App() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [interests, setInterests] = useState([]);
+  const [submitted, setSubmitted] = useState(false);
+
+  const allInterests = ["Web Development", "Design", "Data Science"];
+
+  const handleCheckboxChange = (interest) => {
+    if (interests.includes(interest)) {
+      setInterests(interests.filter((i) => i !== interest));
+    } else {
+      setInterests([...interests, interest]);
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitted(true);
+  };
+
   return (
-    <main>
-      <h1>Hi, I'm (your name)</h1>
-      <img alt="My profile pic" src="https://via.placeholder.com/350" />
+    <div>
+      <h1>Hi, I'm Your Name</h1>
+      <img
+  src="https://via.placeholder.com/350"
+  alt="My profile pic"
+/>
+
       <h2>About Me</h2>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-        occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-        mollit anim id est laborum.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
+        imperdiet, nulla et dictum interdum, nisi lorem egestas odio.
       </p>
+      <ul>
+        <li>
+          <a href="https://github.com/yourusername">GitHub</a>
+        </li>
+        <li>
+          <a href="https://linkedin.com/in/yourusername">LinkedIn</a>
+        </li>
+        <li>
+          <a href="https://yourportfolio.com">Portfolio</a>
+        </li>
+      </ul>
 
-      <div>
-        <a href="https://github.com">GitHub</a>
-        <a href="https://linkedin.com">LinkedIn</a>
-      </div>
-    </main>
+      <h2>Newsletter Signup</h2>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Name:
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Your name"
+          />
+        </label>
+        <br />
+        <label>
+          Email:
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="email address"
+          />
+        </label>
+        <br />
+        {allInterests.map((interest) => (
+          <label key={interest}>
+            <input
+              type="checkbox"
+              checked={interests.includes(interest)}
+              onChange={() => handleCheckboxChange(interest)}
+            />
+            {interest}
+          </label>
+        ))}
+        <br />
+        <button type="submit">Submit</button>
+      </form>
+
+      {submitted && (
+        <div>
+          <h3>Thank you, {name}!</h3>
+          {interests.length > 0 && <p>Your interests: {interests.join(", ")}</p>}
+        </div>
+      )}
+    </div>
   );
 }
 
